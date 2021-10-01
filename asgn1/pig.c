@@ -59,7 +59,7 @@ int main(void) {
 
         if (rollResult == RAZORBACK) {
             playerPoints[players_turn] += 10;
-            printf("pig lands on back ");
+            printf(" pig lands on back");
             if (playerPoints[players_turn] >= 100) {
                 winner = true;
                 goto WIN;
@@ -69,7 +69,7 @@ int main(void) {
 
         if (rollResult == TROTTER) {
             playerPoints[players_turn] += 10;
-            printf("pig lands upright ");
+            printf(" pig lands upright");
             if (playerPoints[players_turn] >= 100) {
                 winner = true;
                 goto WIN;
@@ -79,7 +79,7 @@ int main(void) {
 
         if (rollResult == SNOUTER) {
             playerPoints[players_turn] += 15;
-            printf("pig lands on snout ");
+            printf(" pig lands on snout");
             if (playerPoints[players_turn] >= 100) {
                 winner = true;
                 goto WIN;
@@ -89,7 +89,7 @@ int main(void) {
 
         if (rollResult == JOWLER) {
             playerPoints[players_turn] += 5;
-            printf("pig lands on ear ");
+            printf(" pig lands on ear");
             if (playerPoints[players_turn] >= 100) {
                 winner = true;
                 goto WIN;
@@ -98,7 +98,7 @@ int main(void) {
         }
 
         if (rollResult == SIDE) {
-            printf("pig lands on side\n");
+            printf(" pig lands on side\n");
             player_counter += 1;
             int players_turn = player_turn(player_counter, input_num_players);
             printf("%s rolls the pig... ", names[players_turn]);
