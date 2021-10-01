@@ -98,7 +98,7 @@ int main(void) {
         }
 
         if (rollResult == SIDE) {
-            printf("pig lands on side \n");
+            printf("pig lands on side\n");
             player_counter += 1;
             int players_turn = player_turn(player_counter, input_num_players);
             printf("%s rolls the pig... ", names[players_turn]);
