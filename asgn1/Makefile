@@ -11,4 +11,3 @@ clean:
 
 format:
 	clang-format -i -style=pig *.[c,h]
-//makefile from people from discord
