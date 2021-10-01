@@ -47,7 +47,7 @@ int main(void) {
 
     int player_counter = 0; //initializing player count, always start at 0
 
-    printf("%s rolls the pig... ", names[player_counter]); //always print the initial player
+    printf("%s rolls the pig...", names[player_counter]); //always print the initial player
 
     while (
         true) { //no specific condition, the loop will alternate players and play the game till someone wins
