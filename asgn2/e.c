@@ -22,6 +22,7 @@ double e() {
 
         factorial_total = factorial_total * k; //1 * 1
         e_formula = 1 / factorial_total;
+
         if (e_formula < EPSILON) {
             break;
         }
