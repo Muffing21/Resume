@@ -1,5 +1,5 @@
 CC = clang
-CFLAGS = -Wall -Wpedantic -Werror -Wextra
+CFLAGS = -Wall -Wpedantic -Werror -Wextra -g
 LFLAGS = -lm
 
 all: sorting
@@ -26,7 +26,7 @@ stats.o: stats.c stats.h
 	$(CC) $(CFLAGS) -c stats.c
 
 clean:
-	rm -f sorting sorting.o insert.o heap.o quick.o shell.o set.o
+	rm -f sorting sorting.o insert.o heap.o quick.o shell.o set.o stats.o
 
 format:
 	clang-format -i -style=file *.[ch]
