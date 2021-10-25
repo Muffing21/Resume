@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
         }
     }
     uint32_t store_parse;
-    uint32_t maxline = 1000;
+    uint32_t maxline = 1000000;
     char city_num[1000];
     char city_names[1000];
     char *store_names[1000];
@@ -90,7 +90,6 @@ int main(int argc, char **argv) {
     uint32_t city_x;
     uint32_t city_y;
     uint32_t city_z;
-    //uint32_t store_num[1000];
 
     fgets(city_num, maxline, infile);
     sscanf(city_num, "%" SCNu32, &store_parse);
@@ -118,6 +117,12 @@ int main(int argc, char **argv) {
                "graph.\n -v             Enable verbose printing.\n -h             Program "
                "usage and help.\n -i infile      Input containing graph (default: stdin)\n -o "
                "outfile     Output of computed path (default: stdout)");
+    }
+    path_delete(&curr);
+    path_delete(&shortest);
+    graph_delete(&graph);
+    for(uint32_t z = 0; z < store_parse; z++){
+       free(store_names[z]);
     }
     return 0;
 }
