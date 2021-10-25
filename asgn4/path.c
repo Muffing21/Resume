@@ -30,9 +30,12 @@ Path *path_create(void) {
 
 void path_delete(Path **p) {
     if (*p && (*p)->vertices) {
+        free((*p)->vertices);
         free(*p);
         *p = NULL;
     }
+    return;
+    
 }
 
 bool path_push_vertex(Path *p, uint32_t v, Graph *G) {
