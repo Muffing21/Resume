@@ -17,20 +17,22 @@
 int recursive_counter = 0;
 
 void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile,
-    uint32_t max_v, bool verb) {
+    uint32_t max_v, bool verb) { //
     graph_mark_visited(G, v);
     path_push_vertex(curr, v, G);
     recursive_counter += 1;
-    if(path_length(curr) >= path_length(shortest) && path_length(shortest) > 0){
-    	path_pop_vertex(curr, &v, G);
-    	return;
+    if (path_length(curr) >= path_length(shortest)
+        && path_length(shortest) > 0) { //dont want the curr length to be bigger than shortest
+        path_pop_vertex(curr, &v, G);
+        return;
     }
     for (uint32_t z = 0; z < max_v; z++) {
-        if (graph_has_edge(G, v, z) == true) {
+        if (graph_has_edge(G, v, z) == true) { //important, check if it has edge
 
             if (graph_visited(G, z) == false) {
 
-                dfs(G, z, curr, shortest, cities, outfile, max_v, verb);
+                dfs(G, z, curr, shortest, cities, outfile, max_v,
+                    verb); //here is the recursive call
             }
             if (z == START_VERTEX && path_vertices(curr) == max_v) {
                 path_push_vertex(curr, z, G);
@@ -40,7 +42,8 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
                 if (path_length(shortest) > path_length(curr) && path_length(shortest) > 0) {
                     path_copy(shortest, curr);
                     path_pop_vertex(curr, &z, G);
-                } else if (path_length(shortest) == 0) {
+                } else if (path_length(shortest)
+                           == 0) { //we want to skip this if the condition above is successful,
                     path_copy(shortest, curr);
                     path_pop_vertex(curr, &z, G);
                 }
@@ -66,9 +69,7 @@ int main(int argc, char **argv) {
 
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
-        case 'h':
-            get_h = true;
-            break;
+        case 'h': get_h = true; break;
         case 'u':
             get_u = true;
             undirected = true;
@@ -76,9 +77,10 @@ int main(int argc, char **argv) {
         case 'i':
             get_i = true;
             infile = fopen(optarg, "r");
-            if(infile == NULL){
-              fprintf(stderr, "You did not input a file name, try again!\n");
-              exit(EXIT_FAILURE);
+            if (infile == NULL) {
+                fprintf(stderr,
+                    "You did not input a file name, try again!\n"); // in the case where user inputs -u after -i
+                exit(EXIT_FAILURE);
             }
             break;
         case 'o':
@@ -94,7 +96,7 @@ int main(int argc, char **argv) {
                "graph.\n  -v             Enable verbose printing.\n  -h             Program "
                "usage and help.\n  -i infile      Input containing graph (default: stdin)\n  -o "
                "outfile     Output of computed path (default: stdout)\n");
-               return 0;
+        return 0;
     }
     uint32_t store_parse;
     uint32_t maxline = 1000000;
@@ -111,7 +113,7 @@ int main(int argc, char **argv) {
 
     for (uint32_t i = 0; i < store_parse; i++) {
         fgets(city_names, maxline, infile);
-        city_names[strlen(city_names) - 1] = '\0';
+        city_names[strlen(city_names) - 1] = '\0'; //gets rid of \n from reading the file
         store_names[i] = strdup(city_names);
     }
     Graph *graph = graph_create(store_parse, undirected);
@@ -120,18 +122,18 @@ int main(int argc, char **argv) {
         graph_add_edge(graph, city_x, city_y, city_z);
     }
 
-    Path *curr = path_create();
+    Path *curr = path_create(); //create path for current and shortest
     Path *shortest = path_create();
     dfs(graph, START_VERTEX, curr, shortest, store_names, outfile, store_parse, get_v);
     path_print(shortest, outfile, store_names);
     printf("Total recursive calls: %d\n", recursive_counter);
 
-    
-    path_delete(&curr);
+    path_delete(&curr); //delete after use, free the allocated memories
     path_delete(&shortest);
     graph_delete(&graph);
-    for(uint32_t z = 0; z < store_parse; z++){
-       free(store_names[z]);
+    for (uint32_t z = 0; z < store_parse;
+         z++) { //loop cuz each city names are in there and free each of them
+        free(store_names[z]);
     }
     return 0;
 }

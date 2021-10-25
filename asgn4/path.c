@@ -49,7 +49,8 @@ bool path_push_vertex(Path *p, uint32_t v, Graph *G) {
     return true;
 }
 
-bool path_pop_vertex(Path *p, uint32_t *v, Graph *G) {
+bool path_pop_vertex(Path *p, uint32_t *v,
+    Graph *G) { //make sure to check again if stack is empty otherwise core dump
     if (stack_empty(p->vertices)) {
         return false;
     }

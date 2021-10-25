@@ -66,7 +66,7 @@ bool stack_pop(Stack *s, uint32_t *x) {
     *x = s->items[s->top];
     return true;
 }
-bool stack_peek(Stack *s, uint32_t *x) {
+bool stack_peek(Stack *s, uint32_t *x) { //take the top of the stack but dont actually edit it
     if (s->top == 0) {
         return false;
     }
