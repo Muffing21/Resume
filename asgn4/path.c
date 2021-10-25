@@ -16,11 +16,11 @@ struct Path {
 Path *path_create(void) {
 
     Path *p = (Path *) malloc(sizeof(Path));
-    if(p){
-    p->vertices = stack_create(VERTICES);
-    p->length = 0;
-    
-    if (!p->vertices) {
+    if (p) {
+        p->vertices = stack_create(VERTICES);
+        p->length = 0;
+
+        if (!p->vertices) {
             free(p);
             p = NULL;
         }
@@ -35,7 +35,6 @@ void path_delete(Path **p) {
         *p = NULL;
     }
     return;
-    
 }
 
 bool path_push_vertex(Path *p, uint32_t v, Graph *G) {
@@ -63,7 +62,7 @@ bool path_pop_vertex(Path *p, uint32_t *v, Graph *G) {
 }
 
 uint32_t path_vertices(Path *p) { //returns num of vertices inside the stack?
-    return sizeof(p->vertices);
+    return stack_size(p->vertices);
 }
 
 uint32_t path_length(Path *p) {

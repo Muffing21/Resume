@@ -70,7 +70,7 @@ bool stack_peek(Stack *s, uint32_t *x) {
     if (s->top == 0) {
         return false;
     }
-    *x = s->items[s->top];
+    *x = s->items[s->top - 1];
     return true;
 }
 void stack_copy(Stack *dst, Stack *src) {
