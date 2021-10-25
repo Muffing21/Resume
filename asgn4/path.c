@@ -42,9 +42,8 @@ bool path_push_vertex(Path *p, uint32_t v, Graph *G) {
         return false;
     }
     uint32_t z;
-    uint32_t *i = &z;
-    stack_peek(p->vertices, i);
-    p->length += graph_edge_weight(G, *i, v);
+    stack_peek(p->vertices, &z);
+    p->length += graph_edge_weight(G, z, v);
     stack_push(p->vertices, v);
     return true;
 }
@@ -54,10 +53,9 @@ bool path_pop_vertex(Path *p, uint32_t *v, Graph *G) {
         return false;
     }
     uint32_t z;
-    uint32_t *i = &z;
-    stack_peek(p->vertices, i);
-    p->length -= graph_edge_weight(G, *i, *v);
     stack_pop(p->vertices, v);
+    stack_peek(p->vertices, &z);
+    p->length -= graph_edge_weight(G, z, *v);
     return true;
 }
 
