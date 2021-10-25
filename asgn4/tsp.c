@@ -8,42 +8,54 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #define OPTIONS "hvui:o:"
 //strdup to copy the city names, allocate sufficient memory then free
 
+int recursive_counter = 0;
+
 void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile,
-    uint32_t max_v) {
+    uint32_t max_v, bool verb) {
     graph_mark_visited(G, v);
     path_push_vertex(curr, v, G);
+    recursive_counter += 1;
     for (uint32_t z = 0; z < max_v; z++) {
         if (graph_has_edge(G, v, z) == true) {
 
             if (graph_visited(G, z) == false) {
-                dfs(G, z, curr, shortest, cities, outfile, max_v);
+
+                dfs(G, z, curr, shortest, cities, outfile, max_v, verb);
             }
             if (z == START_VERTEX && path_vertices(curr) == max_v) {
                 path_push_vertex(curr, z, G);
-                if (path_vertices(shortest) > path_vertices(curr)) {
+                if (verb == true) {
+                    path_print(curr, outfile, cities);
+                }
+                if (path_length(shortest) > path_length(curr) && path_length(shortest) != 0) {
+                    path_copy(shortest, curr);
+                    path_pop_vertex(curr, &z, G);
+                } else if (path_length(shortest) == 0) {
                     path_copy(shortest, curr);
                     path_pop_vertex(curr, &z, G);
                 }
             }
         }
     }
-    graph_mark_unvisited(G, v);
     path_pop_vertex(curr, &v, G);
+    graph_mark_unvisited(G, v);
 }
 
 int main(int argc, char **argv) {
+
     FILE *infile = stdin;
     FILE *outfile = stdout;
     int opt = 0;
     bool undirected = false;
 
     bool get_h = false;
-    //    bool get_v = false;
+    bool get_v = false;
     bool get_u = false;
     bool get_i = false;
     bool get_o = false;
@@ -66,6 +78,7 @@ int main(int argc, char **argv) {
             get_o = true;
             outfile = fopen(optarg, "w");
             break;
+        case 'v': get_v = true; break;
         }
     }
     uint32_t store_parse;
@@ -84,8 +97,8 @@ int main(int argc, char **argv) {
 
     for (uint32_t i = 0; i < store_parse; i++) {
         fgets(city_names, maxline, infile);
-        sscanf(city_names, "%s", city_names);
-        store_names[i] = city_names;
+        city_names[strlen(city_names) - 1] = '\0';
+        store_names[i] = strdup(city_names);
     }
     Graph *graph = graph_create(store_parse, undirected);
     while (fgets(city_xyz, maxline, infile) != NULL) {
@@ -95,8 +108,9 @@ int main(int argc, char **argv) {
 
     Path *curr = path_create();
     Path *shortest = path_create();
-    dfs(graph, START_VERTEX, curr, shortest, store_names, outfile, store_parse);
+    dfs(graph, START_VERTEX, curr, shortest, store_names, outfile, store_parse, get_v);
     path_print(shortest, outfile, store_names);
+    printf("Total recursive calls: %d\n", recursive_counter);
 
     if (get_h) {
         printf("SYNOPSIS\n Traveling Salesman Problem using DFS.\n\nUSAGE\n ./tsp [-u] [-v] "
@@ -105,4 +119,5 @@ int main(int argc, char **argv) {
                "usage and help.\n -i infile      Input containing graph (default: stdin)\n -o "
                "outfile     Output of computed path (default: stdout)");
     }
+    return 0;
 }

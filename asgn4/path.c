@@ -4,6 +4,7 @@
 #include "stack.h"
 #include "vertices.h"
 
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,7 +56,9 @@ bool path_pop_vertex(Path *p, uint32_t *v, Graph *G) {
     uint32_t z;
     stack_pop(p->vertices, v);
     stack_peek(p->vertices, &z);
-    p->length -= graph_edge_weight(G, z, *v);
+    if (stack_empty(p->vertices) == false) {
+        p->length -= graph_edge_weight(G, z, *v);
+    }
     return true;
 }
 
@@ -73,5 +76,9 @@ void path_copy(Path *dst, Path *src) { //edit this later
 }
 
 void path_print(Path *p, FILE *outfile, char *cities[]) {
+    printf("Path length: "
+           "%" PRIu32 "\n",
+        p->length);
+    printf("Path: ");
     stack_print(p->vertices, outfile, cities);
 }
