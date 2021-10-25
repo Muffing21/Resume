@@ -34,21 +34,22 @@ bool graph_add_edge(Graph *G, uint32_t i, uint32_t j, uint32_t k) {
     if (G->undirected == true) {
         G->matrix[j][i] = k;
     }
-    if (i >= 1 && j >= i && j <= G->vertices) {
+    if (i >= 0 && j >= 0 && j <= G->vertices) {
+        G->matrix[i][j] = k;
         return true;
     }
     return false;
 }
 
 bool graph_has_edge(Graph *G, uint32_t i, uint32_t j) {
-    if (i >= 1 && j >= i && j <= G->vertices && G->matrix[i][j] > 0) {
+    if (i >= 0 && j >= 0 && j <= G->vertices && G->matrix[i][j] > 0) {
         return true;
     }
     return false;
 }
 
 uint32_t graph_edge_weight(Graph *G, uint32_t i, uint32_t j) {
-    if (i >= 1 && j >= i && j <= G->vertices && G->matrix[i][j] > 0) {
+    if (i >= 0 && j >= 0 && j <= G->vertices && G->matrix[i][j] > 0) {
         return G->matrix[i][j];
     }
     return 0;
@@ -62,13 +63,13 @@ bool graph_visited(Graph *G, uint32_t v) {
 }
 
 void graph_mark_visited(Graph *G, uint32_t v) {
-    if (v > 0) {
+    if (v >= 0) {
         G->visited[v] = true;
     }
 }
 
 void graph_mark_unvisited(Graph *G, uint32_t v) {
-    if (v > 0) {
+    if (v >= 0) {
         G->visited[v] = false;
     }
 }
