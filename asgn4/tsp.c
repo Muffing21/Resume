@@ -21,6 +21,10 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
     graph_mark_visited(G, v);
     path_push_vertex(curr, v, G);
     recursive_counter += 1;
+    if(path_length(curr) >= path_length(shortest) && path_length(shortest) > 0){
+    	path_pop_vertex(curr, &v, G);
+    	return;
+    }
     for (uint32_t z = 0; z < max_v; z++) {
         if (graph_has_edge(G, v, z) == true) {
 
@@ -33,7 +37,7 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
                 if (verb == true) {
                     path_print(curr, outfile, cities);
                 }
-                if (path_length(shortest) > path_length(curr) && path_length(shortest) != 0) {
+                if (path_length(shortest) > path_length(curr) && path_length(shortest) > 0) {
                     path_copy(shortest, curr);
                     path_pop_vertex(curr, &z, G);
                 } else if (path_length(shortest) == 0) {
@@ -65,7 +69,6 @@ int main(int argc, char **argv) {
         case 'h':
             get_h = true;
             break;
-            //        case 'v': get_v = true; break;
         case 'u':
             get_u = true;
             undirected = true;
@@ -73,6 +76,10 @@ int main(int argc, char **argv) {
         case 'i':
             get_i = true;
             infile = fopen(optarg, "r");
+            if(infile == NULL){
+              fprintf(stderr, "You did not input a file name, try again!\n");
+              exit(EXIT_FAILURE);
+            }
             break;
         case 'o':
             get_o = true;
@@ -80,6 +87,14 @@ int main(int argc, char **argv) {
             break;
         case 'v': get_v = true; break;
         }
+    }
+    if (get_h) {
+        printf("SYNOPSIS\n Traveling Salesman Problem using DFS.\n\nUSAGE\n ./tsp [-u] [-v] "
+               "[-h] [-i infile] [-o outfile]\n\nOPTIONS\n  -u             Use undirected "
+               "graph.\n  -v             Enable verbose printing.\n  -h             Program "
+               "usage and help.\n  -i infile      Input containing graph (default: stdin)\n  -o "
+               "outfile     Output of computed path (default: stdout)\n");
+               return 0;
     }
     uint32_t store_parse;
     uint32_t maxline = 1000000;
@@ -111,13 +126,7 @@ int main(int argc, char **argv) {
     path_print(shortest, outfile, store_names);
     printf("Total recursive calls: %d\n", recursive_counter);
 
-    if (get_h) {
-        printf("SYNOPSIS\n Traveling Salesman Problem using DFS.\n\nUSAGE\n ./tsp [-u] [-v] "
-               "[-h] [-i infile] [-o outfile]\n\nOPTIONS\n -u             Use undirected "
-               "graph.\n -v             Enable verbose printing.\n -h             Program "
-               "usage and help.\n -i infile      Input containing graph (default: stdin)\n -o "
-               "outfile     Output of computed path (default: stdout)");
-    }
+    
     path_delete(&curr);
     path_delete(&shortest);
     graph_delete(&graph);
