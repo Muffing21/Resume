@@ -6,12 +6,12 @@
 #include <stdlib.h>
 
 struct Stack {
-   uint32_t top; //index of the next empty slot
-   uint32_t capacity; //number of items that can be pushed
-   Node **items;  
+    uint32_t top; //index of the next empty slot
+    uint32_t capacity; //number of items that can be pushed
+    Node **items;
 };
 
-Stack *stack_create(uint32_t capacity){
+Stack *stack_create(uint32_t capacity) {
     Stack *s = (Stack *) malloc(sizeof(Stack));
     if (s) {
         s->top = 0;
@@ -66,8 +66,6 @@ bool stack_pop(Stack *s, Node **n) {
     *n = s->items[s->top];
     return true;
 }
-
-
 
 //void stack_print(Stack *s) {
 //
