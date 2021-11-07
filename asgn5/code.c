@@ -63,8 +63,7 @@ bool code_get_bit(Code *c, uint32_t i) {
     uint8_t shift_left = 00000001 << i % 8;
     uint8_t bit_masking = shift_left & c->bits[i / 8];
     uint8_t shift_right = bit_masking >> i % 8;
-    c->bits[i / 8] = shift_right;
-    return true;
+    return shift_right;
 }
 
 bool code_push_bit(Code *c, uint8_t bit) {
