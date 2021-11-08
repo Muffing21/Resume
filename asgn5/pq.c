@@ -76,6 +76,7 @@ void build_heap(Node **items, uint32_t first, uint32_t last) {
     }
 }
 
+//dont actually need it but here for aesthetics
 void heap_sort(Node **items, uint32_t n) {
     uint32_t first = 1;
     uint32_t last = n;

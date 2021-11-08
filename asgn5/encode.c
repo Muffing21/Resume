@@ -45,7 +45,9 @@ int main(int argc, char **argv) {
             break;
         case 'o':
             get_o = true;
-            outfile = open(optarg, O_WRONLY | O_CREAT | O_TRUNC); //this way we can write into a file but if no file then create then write so use OR operation
+            outfile = open(optarg,
+                O_WRONLY | O_CREAT
+                    | O_TRUNC); //this way we can write into a file but if no file then create then write so use OR operation
             break;
         case 'v': get_v = true; break;
         }
@@ -57,46 +59,56 @@ int main(int argc, char **argv) {
                "statistics.\n\t-i infile      Input file to compress.\n\t -o             Output of "
                "compressed data.\n");
     }
-    
-	uint64_t histogram[ALPHABET];
-	histogram[0] = 1;
-	histogram[255] =1;
-	uint8_t temp_buf[ALPHABET];
-	Code table[ALPHABET];
 
-	struct stat temp;
-	int unique_symbol = 0;
-        
-	int check_read = 0;
-	while((check_read = read_bytes(infile, temp_buf, BLOCK)) != 0){
-	   for (int i = 0; i < check_read; i++){
-	   	if (histogram[temp_buf[i]] == 0){
-	   		unique_symbol += 1;
-	   	}
-	   	histogram[temp_buf[i]] += 1;
-	   }
-	}
-	Node *root = build_tree(histogram);
-	build_codes(root, table); 
-	fstat(infile, &temp);
-	Header header;
-	header.magic = MAGIC;
-	header.permissions = temp.st_mode;
-	header.tree_size = (3 * unique_symbol) - 1;
-	header.file_size = temp.st_size;
-	
-	write_bytes(outfile, (uint8_t *) &header, sizeof(Header));
-	dump_tree(outfile, root);
-	Code c = code_init();
-	while(read_bytes(infile, temp_buf, BLOCK) > 0){
-		write_code(outfile, &c);
-	
-	}
-	flush_codes(outfile);
-	close(infile);
-	close(outfile);
-	delete_tree(&root);
-	return 0;
+    uint64_t histogram[ALPHABET] = { 0 };
+    histogram[0] = 1;
+    histogram[255] = 1;
+    uint8_t temp_buf[ALPHABET] = { 0 };
+    Code table[ALPHABET];
+
+    struct stat temp;
+    int unique_symbol = 0;
+
+    int check_read = 0;
+    int check_read2 = 0;
+    while ((check_read = read_bytes(infile, temp_buf, BLOCK)) > 0) {
+        for (int i = 0; i < check_read; i++) {
+            if (histogram[temp_buf[i]] == 0) {
+                unique_symbol += 1;
+            }
+            histogram[temp_buf[i]] += 1;
+        }
+    }
+    lseek(infile, 0, SEEK_SET);
+    Node *root = build_tree(histogram);
+    build_codes(root, table);
+    fstat(infile, &temp);
+    Header header;
+    header.magic = MAGIC;
+    header.permissions = temp.st_mode;
+    header.tree_size = (3 * unique_symbol) - 1;
+    header.file_size = temp.st_size;
+    fchmod(outfile, header.permissions);
+
+    write_bytes(outfile, (uint8_t *) &header, sizeof(Header));
+    dump_tree(outfile, root);
+    while ((check_read2 = read_bytes(infile, temp_buf, BLOCK)) > 0) {
+        for (int i = 0; i < check_read2; i++) {
+            write_code(outfile, &(table[i]));
+        }
+    }
+
+    if (get_v) {
+        printf("Uncompressed file size: %" PRIu64 "\n"
+               "Compressed file size: %" PRIu64 "Space saving: %.2f",
+            header.file_size, bytes_written,
+            100 * (1 - ((float) bytes_written / header.file_size)));
+    }
+    flush_codes(outfile);
+    close(infile);
+    close(outfile);
+    delete_tree(&root);
+    return 0;
 }
 
 //fchmod()

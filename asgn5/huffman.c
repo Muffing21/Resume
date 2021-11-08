@@ -8,9 +8,11 @@
 #include "io.h"
 #include "stack.h"
 
+//this file was written with the help of pseudocode from the assignment document
+
 Node *build_tree(uint64_t hist[static ALPHABET]) {
     PriorityQueue *create_pq = pq_create(ALPHABET);
-    for (uint8_t i = 0; i < hist[ALPHABET]; i++) {
+    for (uint16_t i = 0; i < ALPHABET; i++) {
         if (hist[i] > 0) {
             Node *create_node = node_create(i, hist[i]);
             enqueue(create_pq, create_node);
@@ -27,25 +29,31 @@ Node *build_tree(uint64_t hist[static ALPHABET]) {
     }
     Node *root;
     dequeue(create_pq, &root);
+    pq_delete(&create_pq);
     return root;
+}
+
+void build_helper(Node *root, Code table[static ALPHABET], Code *c) {
+    if (root != NULL) {
+        if (!(root->left) && !(root->right)) {
+            table[root->symbol] = *c;
+        } else {
+            uint8_t *trash_variable = 0;
+            code_push_bit(c, 0);
+            build_helper(root->left, table, c);
+            code_pop_bit(c, trash_variable);
+
+            code_push_bit(c, 1);
+            build_helper(root->right, table, c);
+            code_pop_bit(c, trash_variable);
+        }
+    }
+    return;
 }
 
 void build_codes(Node *root, Code table[static ALPHABET]) {
     Code c = code_init();
-    if (root != NULL) {
-        if (!(root->left) && !(root->right)) {
-            table[root->symbol] = c;
-        } else {
-            uint8_t *trash_variable = 0;
-            code_push_bit(&c, 0);
-            build_codes(root->left, table);
-            code_pop_bit(&c, trash_variable);
-
-            code_push_bit(&c, 1);
-            build_codes(root->right, table);
-            code_pop_bit(&c, trash_variable);
-        }
-    }
+    build_helper(root, table, &c);
 }
 
 void dump_tree(int outfile, Node *root) {
@@ -86,6 +94,7 @@ Node *rebuild_tree(uint16_t nbytes, uint8_t tree[static nbytes]) {
     }
     Node *root;
     stack_pop(s, &root);
+    stack_delete(&s);
     return root;
 }
 

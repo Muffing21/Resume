@@ -13,6 +13,8 @@
 static uint16_t index_counter = 0;
 static uint8_t buf[BLOCK];
 static uint32_t read_bit_buffer_size = 0;
+uint64_t bytes_read = 0;
+uint64_t bytes_written = 0;
 
 //help from christian
 
@@ -21,12 +23,14 @@ int read_bytes(int infile, uint8_t *buf, int nbytes) {
     //ssize_t read(int fd, void *buf, size_t count)
     ssize_t read_file = 0;
     while (read_file < nbytes) {
-        ssize_t byte_read = read(infile, buf, nbytes);
-        read_file += byte_read;
-        if (byte_read == 0) {
+        ssize_t byte_reads = read(infile, buf, nbytes);
+
+        read_file += byte_reads;
+        if (byte_reads == 0) {
             return read_file;
         }
     }
+    bytes_read += read_file;
     return read_file;
 }
 
@@ -35,12 +39,13 @@ int write_bytes(int outfile, uint8_t *buf, int nbytes) {
     // ssize_t write(int fd, const void *buf, size_t count);
     ssize_t write_file = 0;
     while (write_file < nbytes) {
-        ssize_t byte_written = write(outfile, buf, nbytes);
-        write_file += byte_written;
-        if (byte_written == 0) {
+        ssize_t byte_writtens = write(outfile, buf, nbytes);
+        write_file += byte_writtens;
+        if (byte_writtens == 0) {
             return write_file;
         }
     }
+    bytes_written += write_file;
     return write_file;
 }
 bool read_bit(int infile, uint8_t *bit) {

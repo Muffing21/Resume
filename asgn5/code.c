@@ -35,6 +35,7 @@ bool code_full(Code *c) {
 
 bool code_set_bit(Code *c, uint32_t i) {
     // check range of i against ALPHABET from defines.h
+    //check out darrel long's lecture slide, learned how to do this from there
     if (i > ALPHABET) {
         return false;
     }
