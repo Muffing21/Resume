@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
                "statistics.\n\t-i infile      Input file to compress.\n\t -o             Output of "
                "compressed data.\n");
     }
-    
+
     uint8_t buffer[ALPHABET];
     uint8_t buffer2[ALPHABET];
     uint8_t temp = 0;
@@ -84,12 +84,10 @@ int main(int argc, char **argv) {
             t2 = t;
         }
     }
-    if (get_v){
-	printf("Uncompressed file size: %" PRIu64 "\n"
+    if (get_v) {
+        printf("Uncompressed file size: %" PRIu64 "\n"
                "Compressed file size: %" PRIu64 "Space saving: %.2f",
-            bytes_read, bytes_written,
-            100 * (1 - ((float) bytes_written / bytes_read)));
-    
+            bytes_read, bytes_written, 100 * (1 - ((float) bytes_written / bytes_read)));
     }
     delete_tree(&t);
     close(infile);
