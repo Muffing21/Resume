@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     fchmod(outfile, header.permissions);
-    read_bytes(infile, buffer2, sizeof(Header));
+    read_bytes(infile, buffer2, header.tree_size);
     Node *t = rebuild_tree(header.tree_size, buffer2);
     Node *t2 = t;
     while (read_bit(infile, &temp) == true && write_byte_counter < header.file_size) {
@@ -83,6 +83,7 @@ int main(int argc, char **argv) {
             t2 = t;
         }
     }
+    delete_tree(&t);
     close(infile);
     close(outfile);
 }
