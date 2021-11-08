@@ -141,9 +141,9 @@ bool dequeue(PriorityQueue *q, Node **n) {
     }
 
     *n = q->items[q->head];
+    q->items[q->head] = q->items[q->tail - 1];
+    q->items[q->tail - 1] = *n;
     q->tail -= 1;
-    q->items[q->head] = q->items[q->tail];
-    q->items[q->tail] = *n;
     build_heap(q->items, q->head + 1, q->tail);
     q->size--;
     return true;
