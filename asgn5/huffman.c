@@ -33,6 +33,7 @@ Node *build_tree(uint64_t hist[static ALPHABET]) {
     return root;
 }
 
+//i got from assignment doc
 void build_helper(Node *root, Code table[static ALPHABET], Code *c) {
     if (root != NULL) {
         if (!(root->left) && !(root->right)) {
@@ -74,6 +75,7 @@ void dump_tree(int outfile, Node *root) {
     }
 }
 
+//check if we're at the leaf node or the interior
 Node *rebuild_tree(uint16_t nbytes, uint8_t tree[static nbytes]) {
     Stack *s = stack_create(ALPHABET);
     for (uint16_t i = 0; i < nbytes; i++) {
@@ -98,6 +100,7 @@ Node *rebuild_tree(uint16_t nbytes, uint8_t tree[static nbytes]) {
     return root;
 }
 
+//only use this function after YOU'RE DONE USIING THE TREE
 void delete_tree(Node **root) {
     if (root != NULL) {
         if (!((*root)->left) && !((*root)->right)) {

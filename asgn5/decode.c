@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
                "statistics.\n\t-i infile      Input file to compress.\n\t -o             Output of "
                "compressed data.\n");
     }
-
+    //alot of the processes here is followed from the assignment doc
     uint8_t buffer[ALPHABET];
     uint8_t buffer2[ALPHABET];
     uint8_t temp = 0;
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     fchmod(outfile, header.permissions);
     read_bytes(infile, buffer2, header.tree_size);
     Node *t = rebuild_tree(header.tree_size, buffer2);
-    Node *t2 = t;
+    Node *t2 = t; //need to make a copy so you can reset it later
     while (read_bit(infile, &temp) == true && write_byte_counter < header.file_size) {
         if (temp == 1) {
             t2 = t2->right;

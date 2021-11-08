@@ -97,7 +97,8 @@ void flush_codes(int outfile) {
     if (index_counter > 0) {
         //convert index into bytes
         write_bytes(outfile, buf, index_counter / 8);
-        if (index_counter % 8 != 0) {
+        if (index_counter % 8
+            != 0) { //here you want to make sure you're getting the index right at where you want to stop
             write_bytes(outfile, &(buf[index_counter / 8]), 1);
         }
     }

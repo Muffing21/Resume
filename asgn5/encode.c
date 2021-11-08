@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
                "statistics.\n\t-i infile      Input file to compress.\n\t -o             Output of "
                "compressed data.\n");
     }
-
+    //a lot of the processes here is followed from the assignment doc
     uint64_t histogram[ALPHABET] = { 0 };
     histogram[0] = 1;
     histogram[255] = 1;
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
             histogram[temp_buf[i]] += 1;
         }
     }
-    lseek(infile, 0, SEEK_SET);
+    lseek(infile, 0, SEEK_SET); //LSEEK TO START READING THE FILE FROM THE BEGINNING
     Node *root = build_tree(histogram);
     build_codes(root, table);
     fstat(infile, &temp);
