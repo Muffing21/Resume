@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <stdlib.h>
+#include "node.h"
 
 //EVERYTHING HERE IS CODED FOLLOWING TA CHRISTIAN'S GUIDE
 
@@ -38,8 +39,8 @@ uint32_t min_child(Node **items, uint32_t first, uint32_t last) {
     uint32_t left = 2 * first;
     uint32_t right = left + 1;
     if (right <= last) {
-        uint32_t left_freq = items[left - 1]->frequency;
-        uint32_t right_freq = items[right - 1]->frequency;
+        uint64_t left_freq = items[left - 1]->frequency;
+        uint64_t right_freq = items[right - 1]->frequency;
         if (right_freq < left_freq) {
             return right;
         }
@@ -52,7 +53,7 @@ void fix_heap(Node **items, uint32_t first, uint32_t last) {
     uint32_t mother = first;
     uint32_t great = min_child(items, mother, last);
 
-    while (mother >= last / 2 && !found) {
+    while (mother <= last / 2 && !found) {
         uint32_t mother_frequency = items[mother - 1]->frequency;
         uint32_t great_frequency = items[great - 1]->frequency;
         if (mother_frequency > great_frequency) {
