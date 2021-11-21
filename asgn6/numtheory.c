@@ -104,7 +104,9 @@ bool is_prime(mpz_t n, uint64_t iters) {
         mpz_set(r, temp);
         mpz_add_ui(s, s, 1);
     }
-
+    if (mpz_cmp_ui(n, 2) == 0 || mpz_cmp_ui(n, 3) == 0) {
+        return true;
+    }
     for (uint64_t i = 1; i < iters; i++) {
 
         mpz_urandomm(temp, state, n);
