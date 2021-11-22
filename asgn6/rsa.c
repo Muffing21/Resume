@@ -35,7 +35,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_add(p_bits, p_bits, temp);
 
     mpz_sub(q_bits, n_bits, p_bits);
-    mpz_urandomm(q_bits, state, q_bits);
+    //mpz_urandomm(q_bits, state, q_bits);
 
     make_prime(p, mpz_get_ui(p_bits), iters);
     make_prime(q, mpz_get_ui(q_bits), iters);
@@ -79,7 +79,7 @@ void rsa_read_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
         "\n"
         "%Zx"
         "\n"
-        "%c\n",
+        "%s\n",
         n, e, s, username);
 }
 

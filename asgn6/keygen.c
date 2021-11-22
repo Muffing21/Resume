@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
         case 'n':
             get_n = true;
             strcpy(public_file,
-                optarg); //this way we can write into a file but if no file then create and write in it
+                optarg); //need to use string copy because default is string
             break;
 
         case 'd':
@@ -69,6 +69,7 @@ int main(int argc, char **argv) {
             if ((seed = atoi(optarg)) == 0) {
                 printf("invalid seed. Try again.");
             }
+            break;
         case 'b':
             get_b = true;
             nbits = atol(optarg);
@@ -94,40 +95,55 @@ int main(int argc, char **argv) {
     rsa_write_pub(n, e, s, getenv("USER"), pb_file); //check back on this
     rsa_write_priv(n, d, pv_file); //check back on this
 
-    if (get_h) {
-        printf("SYPNOSIS\n\tA Huffman encoder.\n\tCompresses a file using the Huffman coding "
-               "algorith.\n\nUSAGE\n\t./encode [-h] [-i infile] [-o outfile]\n\nOPTIONS\n\t-h\t\t  "
-               "           Program usage and help.\n\t -v             Print compression "
-               "statistics.\n\t-i infile      Input file to compress.\n\t -o             Output of "
-               "compressed data.\n");
+    if (get_h) { //changel ater
+        printf("SYPNOSIS\n   Generates an RSA public/private key pair.\n\nUSAGE\n   ./keygen [-hv] "
+               "[-b bits] -n pbfile -d pvfile\n\nOPTIONS\n   -h              Display program help "
+               "and usage.\n   -v              Display verbose program output.\n   -b bits         "
+               "Minimum bits needed for public key n (default: 256).\n   -i confidence   "
+               "Miller-Rabin iterations for testing primes (default:50).\n   -n pbfile       "
+               "Public key file (default: rsa.pub).\n   -d pvfile       Private key file (default: "
+               "rsa.priv).\n   -s seed         Random seed for testing.");
     }
 
     if (get_v) {
         fprintf(stderr, "username: %s\n", getenv("USER"));
         gmp_fprintf(stderr,
             "the signature s: %Zd"
+            "\n"
+            "%d"
             "\n",
-            s);
+            s, mpz_sizeinbase(s, 2));
         gmp_fprintf(stderr,
             "the large prime p: %Zd"
+            "\n"
+            "%d"
             "\n",
-            p);
+            p, mpz_sizeinbase(p, 2));
         gmp_fprintf(stderr,
             "the second large prime q: %Zd"
+            "\n"
+            "%d"
             "\n",
-            q);
+            q, mpz_sizeinbase(q, 2));
         gmp_fprintf(stderr,
             "the public modulus n: %Zd"
+            "\n"
+            "%d"
             "\n",
-            n);
+            n, mpz_sizeinbase(n, 2));
+
         gmp_fprintf(stderr,
             "the public exponent e: %Zd"
+            "\n"
+            "%d"
             "\n",
-            e);
+            e, mpz_sizeinbase(e, 2));
         gmp_fprintf(stderr,
             "the private key d: %Zd"
+            "\n"
+            "%d"
             "\n",
-            d);
+            d, mpz_sizeinbase(d, 2));
     }
 
     randstate_clear();
