@@ -69,8 +69,9 @@ int main(int argc, char **argv) {
     }
 
     rsa_read_pub(n, e, s, username, pb_file);
+    mpz_set_str(m, username, 62);
     if (rsa_verify(m, s, e, n) == false) {
-        printf("failed to verify");
+        printf("failed to verify\n");
         exit(EXIT_FAILURE);
     }
     rsa_encrypt_file(infile, outfile, n, e);
