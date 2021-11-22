@@ -36,6 +36,8 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
 
     mpz_sub(q_bits, n_bits, p_bits);
     //mpz_urandomm(q_bits, state, q_bits);
+    mpz_add_ui(p_bits, p_bits, 1);
+    mpz_add_ui(q_bits, q_bits, 1);
 
     make_prime(p, mpz_get_ui(p_bits), iters);
     make_prime(q, mpz_get_ui(q_bits), iters);
