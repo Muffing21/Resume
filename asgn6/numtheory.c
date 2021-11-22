@@ -14,6 +14,7 @@ void gcd(mpz_t d, mpz_t a, mpz_t b) {
         mpz_set(a, t);
     }
     mpz_set(d, a);
+    mpz_clear(t);
 }
 
 void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
@@ -60,9 +61,8 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
     mpz_t p;
     mpz_t temp;
     mpz_t temp69;
-    mpz_t store_value_one;
 
-    mpz_inits(v, p, temp, store_value_one, temp69, NULL);
+    mpz_inits(v, p, temp, temp69, NULL);
     mpz_set_ui(v, 1);
     mpz_set(p, base);
     mpz_set(temp69, exponent);
@@ -76,7 +76,7 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
         mpz_fdiv_q_ui(temp69, temp69, 2);
     }
     mpz_set(out, v);
-    mpz_clears(v, p, temp, store_value_one, temp69, NULL);
+    mpz_clears(v, p, temp, temp69, NULL);
 }
 
 bool is_prime(mpz_t n, uint64_t iters) {
@@ -116,11 +116,13 @@ bool is_prime(mpz_t n, uint64_t iters) {
             while (mpz_cmp(j, s) < 0 && mpz_cmp(y, temp2) != 0) {
                 pow_mod(y, y, store_value_two, n);
                 if (mpz_cmp_ui(y, 1) == 0) {
+                    mpz_clears(r, j, temp, s, y, temp2, store_value_two, NULL);
                     return false;
                 }
                 mpz_add_ui(j, j, 1);
             }
             if (mpz_cmp(y, temp2) != 0) {
+                mpz_clears(r, j, temp, s, y, temp2, store_value_two, NULL);
                 return false;
             }
         }
