@@ -55,11 +55,14 @@ int main(int argc, char **argv) {
             break;
         case 'n':
             get_n = true;
-            strcpy(public_file, optarg);
+            public_file = strdup(optarg);
             break;
         }
     }
-    FILE *pb_file = fopen(public_file, "w+");
+    FILE *pb_file = fopen(public_file, "r");
+    if (get_n) {
+        free(public_file);
+    }
     if (pb_file == NULL) {
         printf("failed to read the file\n");
         return 0;
@@ -68,6 +71,7 @@ int main(int argc, char **argv) {
     rsa_read_pub(n, e, s, username, pb_file);
     if (rsa_verify(m, s, e, n) == false) {
         printf("failed to verify");
+        exit(EXIT_FAILURE);
     }
     rsa_encrypt_file(infile, outfile, n, e);
 
