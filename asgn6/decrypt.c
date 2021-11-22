@@ -46,6 +46,9 @@ int main(int argc, char **argv) {
         case 'i':
             get_i = true;
             infile = fopen(optarg, "r");
+            if (infile == NULL) {
+                fprintf(stderr, "invalid file name");
+            }
             break;
 
         case 'o':
@@ -60,8 +63,8 @@ int main(int argc, char **argv) {
     }
 
     FILE *pv_file = fopen(private_file, "r");
-    if(get_n){
-    	free(private_file);
+    if (get_n) {
+        free(private_file);
     }
     if (pv_file == NULL) {
         printf("failed to read the file\n");
@@ -83,12 +86,16 @@ int main(int argc, char **argv) {
     if (get_v) {
         gmp_fprintf(stderr,
             "the public modulus n: %Zd"
+            "\n"
+            "%d"
             "\n",
-            n);
+            n, mpz_sizeinbase(n, 2));
         gmp_fprintf(stderr,
             "the private key e: %Zd"
+            "\n"
+            "%d"
             "\n",
-            e);
+            e, mpz_sizeinbase(e, 2));
     }
     rsa_decrypt_file(infile, outfile, n, d); //dont forget to close any opened files
     fclose(pv_file);

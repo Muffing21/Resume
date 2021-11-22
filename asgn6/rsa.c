@@ -165,7 +165,7 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
 
     uint8_t *block = (uint8_t *) malloc(block_k);
     while (gmp_fscanf(infile, "%Zx\n", c) > 0) {
-    	rsa_decrypt(m, c, d, n);
+        rsa_decrypt(m, c, d, n);
         mpz_export(block, &j, 1, sizeof(uint8_t), 1, 0, m);
         write(fileno(outfile), block + 1, j - 1);
     }

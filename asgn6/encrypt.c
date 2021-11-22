@@ -47,6 +47,9 @@ int main(int argc, char **argv) {
         case 'i':
             get_i = true;
             infile = fopen(optarg, "r");
+            if (infile == NULL) {
+                fprintf(stderr, "invalid input file");
+            }
             break;
 
         case 'o':
@@ -90,16 +93,22 @@ int main(int argc, char **argv) {
         fprintf(stderr, "username: %s\n", username);
         gmp_fprintf(stderr,
             "the signature s: %Zd"
+            "\n"
+            "%d"
             "\n",
-            s);
+            s, mpz_sizeinbase(s, 2));
         gmp_fprintf(stderr,
             "the public modulus n: %Zd"
+            "\n"
+            "%d"
             "\n",
-            n);
+            n, mpz_sizeinbase(n, 2));
         gmp_fprintf(stderr,
             "the public exponent e: %Zd"
+            "\n"
+            "%d"
             "\n",
-            e);
+            e, mpz_sizeinbase(e, 2));
     }
 
     fclose(pb_file);
