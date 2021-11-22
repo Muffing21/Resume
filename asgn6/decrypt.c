@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     FILE *infile = stdin;
     FILE *outfile = stdout;
     char *private_file = "rsa.pub";
-    char username[1000];
+
     mpz_t n;
     mpz_t e;
     mpz_t d;
@@ -50,21 +50,25 @@ int main(int argc, char **argv) {
 
         case 'o':
             get_o = true;
-            outfile = fopen(optarg, "r");
+            outfile = fopen(optarg, "w+");
             break;
         case 'n':
             get_n = true;
-            strcpy(private_file, optarg);
+            private_file = strdup(optarg);
             break;
         }
     }
-    FILE *pv_file = fopen(private_file, "w+");
+
+    FILE *pv_file = fopen(private_file, "r");
+    if(get_n){
+    	free(private_file);
+    }
     if (pv_file == NULL) {
         printf("failed to read the file\n");
-        return 0;
+        exit(EXIT_FAILURE);
     }
 
-    rsa_read_priv(n, d, pvfile); //read priv key from the opened file
+    rsa_read_priv(n, d, pv_file); //read priv key from the opened file
 
     if (get_h) {
         printf(
@@ -89,7 +93,7 @@ int main(int argc, char **argv) {
     rsa_decrypt_file(infile, outfile, n, d); //dont forget to close any opened files
     fclose(pv_file);
     fclose(infile);
-    fclose(outfilt);
+    fclose(outfile);
     mpz_clears(n, e, d, NULL);
     return 0;
 }

@@ -158,24 +158,16 @@ void rsa_decrypt(mpz_t m, mpz_t c, mpz_t d, mpz_t n) {
 void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
     mpz_t c;
     mpz_t m;
-    size_t j;
+    size_t j = 0;
     mpz_inits(c, m, NULL);
-    ssize_t check = 0;
 
     uint8_t block_k = (mpz_sizeinbase(n, 2) - 2) / 8;
 
-    uint8_t *block = (uint8_t *) malloc(sizeof(block_k));
-    while ((check += read(fileno(infile), block, block_k - 1)) != 0) {
-        gmp_fscanf(infile,
-            "%Zx"
-            "\n",
-            c);
-        mpz_export(block, &j, 1, block_k, 1, 0, c);
-        rsa_decrypt(m, c, d, n);
-        write(fileno(outfile),
-            "%o"
-            "\n",
-            j - 1);
+    uint8_t *block = (uint8_t *) malloc(block_k);
+    while (gmp_fscanf(infile, "%Zx\n", c) > 0) {
+    	rsa_decrypt(m, c, d, n);
+        mpz_export(block, &j, 1, sizeof(uint8_t), 1, 0, m);
+        write(fileno(outfile), block + 1, j - 1);
     }
     mpz_clears(c, m, NULL);
     free(block);

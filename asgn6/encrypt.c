@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
         case 'o':
             get_o = true;
-            outfile = fopen(optarg, "r");
+            outfile = fopen(optarg, "w+");
             break;
         case 'n':
             get_n = true;
