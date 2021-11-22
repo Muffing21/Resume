@@ -136,7 +136,7 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
     //	mpz_fdiv_q_ui(block_k, temp, 8);
     uint8_t block_k = (mpz_sizeinbase(n, 2) - 2) / 8;
 
-    uint8_t *block = (uint8_t *) malloc(sizeof(block_k));
+    uint8_t *block = (uint8_t *) malloc(block_k);
     block[0] = 0xFF;
     while ((j = read(fileno(infile), block + 1, block_k - 1)) != 0) {
         mpz_import(m, j + 1, 1, sizeof(uint8_t), 1, 0, block);
