@@ -7,13 +7,13 @@ LFLAGS = -lm
 all: encrypt decrypt keygen
 
 encrypt: encrypt.o numtheory.o randstate.o rsa.o
-	$(CC) $(LFLAGS) -o encrypt encrypt.o numtheory.o randstate.o rsa.o
+	$(CC) $(LDFLAGS) -o encrypt encrypt.o numtheory.o randstate.o rsa.o
 
 decrypt: decrypt.o numtheory.o randstate.o rsa.o
-	$(CC) $(LFLAGS) -o decrypt decrypt.o numtheory.o randstate.o rsa.o
+	$(CC) $(LDFLAGS) -o decrypt decrypt.o numtheory.o randstate.o rsa.o
 
 keygen: keygen.o numtheory.o randstate.o rsa.o
-	$(CC) $(LFLAGS) -o keygen keygen.o numtheory.o randstate.o rsa.o
+	$(CC) $(LDFLAGS) -o keygen keygen.o numtheory.o randstate.o rsa.o
 
 encrypt.o: encrypt.c randstate.h numtheory.h
 	$(CC) $(CFLAGS) -c encrypt.c
@@ -31,7 +31,7 @@ randstate.o: randstate.c randstate.h
 	$(CC) $(CFLAGS) -c randstate.c
 
 clean:
-	rm -f decrypt decrypt.o encrypt encrypt.o keygen keygen.o numtheory.o randstate.o
+	rm -f decrypt decrypt.o encrypt encrypt.o keygen keygen.o numtheory.o randstate.o rsa.o
 
 format:
 	clang-format -i -style=file *.[ch]
