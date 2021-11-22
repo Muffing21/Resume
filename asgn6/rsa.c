@@ -128,8 +128,7 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
     mpz_t m;
     mpz_t c;
 
-    mpz_inits(m, c);
-    uint64_t block_counter = 1;
+    mpz_inits(m, c, NULL);
     ssize_t j = 0;
 
     //	mpz_set_ui(size_n, mpz_sizeinbase(n, 2));
@@ -139,17 +138,15 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
 
     uint8_t *block = (uint8_t *) malloc(sizeof(block_k));
     block[0] = 0xFF;
-    while ((j += read(fileno(infile), block, block_k - 1)) != 0) {
-        block[block_counter] = j;
-        mpz_import(m, j, 1, block_k, 1, 0, block);
+    while ((j = read(fileno(infile), block + 1, block_k - 1)) != 0) {
+        mpz_import(m, j + 1, 1, sizeof(uint8_t), 1, 0, block);
         rsa_encrypt(c, m, e, n);
         gmp_fprintf(outfile,
             "%Zx"
             "\n",
             c);
-        block_counter += 1;
     }
-    mpz_clears(m, c);
+    mpz_clears(m, c, NULL);
     free(block);
     return;
 }
@@ -162,7 +159,7 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
     mpz_t c;
     mpz_t m;
     size_t j;
-    mpz_inits(c, m);
+    mpz_inits(c, m, NULL);
     ssize_t check = 0;
 
     uint8_t block_k = (mpz_sizeinbase(n, 2) - 2) / 8;
@@ -180,7 +177,7 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
             "\n",
             j - 1);
     }
-    mpz_clears(c, m);
+    mpz_clears(c, m, NULL);
     free(block);
 }
 
