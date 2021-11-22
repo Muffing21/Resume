@@ -54,13 +54,12 @@ int main(int argc, char **argv) {
 
         case 'n':
             get_n = true;
-            strcpy(public_file,
-                optarg); //need to use string copy because default is string
+            public_file = strdup(optarg); //need to use string copy because default is string
             break;
 
         case 'd':
             get_d = true;
-            strcpy(private_file, optarg);
+            private_file = strdup(optarg);
             break;
 
         case 's':
@@ -83,6 +82,12 @@ int main(int argc, char **argv) {
     }
     FILE *pv_file = fopen(private_file, "w+");
     FILE *pb_file = fopen(public_file, "w+");
+    if (get_n) {
+        free(public_file);
+    }
+    if (get_d) {
+        free(private_file);
+    }
 
     fchmod(fileno(pv_file), 0600);
     randstate_init(seed);
