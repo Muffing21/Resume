@@ -8,10 +8,8 @@
 // In proceedings of the Design Automation Conference (DAC),
 // 2015 52nd ACM/EDAC/IEEE, pp. 1-6. IEEE, 2015.
 
-#define LCS(X, K)                                                              \
-    (X << K) | (X >> (sizeof(uint64_t) * 8 - K)) // left circular shift
-#define RCS(X, K)                                                              \
-    (X >> K) | (X << (sizeof(uint64_t) * 8 - K)) // right circular shift
+#define LCS(X, K) (X << K) | (X >> (sizeof(uint64_t) * 8 - K)) // left circular shift
+#define RCS(X, K) (X >> K) | (X << (sizeof(uint64_t) * 8 - K)) // right circular shift
 
 // Core SPECK operation
 #define R(x, y, k) (x = RCS(x, 8), x += y, x ^= k, y = LCS(y, 3), y ^= x)
@@ -32,7 +30,7 @@ static uint64_t keyed_hash(const char *s, uint32_t length, uint64_t key[]) {
 
     union {
         char b[2 * sizeof(uint64_t)]; // 16 bytes fit into the same space as
-        uint64_t ll[2];               // 2 64 bit numbers.
+        uint64_t ll[2]; // 2 64 bit numbers.
     } in;
 
     uint64_t out[2]; // Speck results in 128 bits of ciphertext
@@ -48,7 +46,7 @@ static uint64_t keyed_hash(const char *s, uint32_t length, uint64_t key[]) {
         if (count % (2 * sizeof(uint64_t)) == 0) {
             speck_expand_key_and_encrypt(in.ll, out, key); // Encrypt 16 bytes
             accum ^= out[0] ^ out[1]; // Add (XOR) them in for a 64 bit result
-            count = 0;                // Reset buffer counter
+            count = 0; // Reset buffer counter
             in.ll[0] = 0x0;
             in.ll[1] = 0x0; // Reset the input buffer
         }
