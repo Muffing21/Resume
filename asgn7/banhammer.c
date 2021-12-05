@@ -107,14 +107,14 @@ int main(int argc, char **argv) {
 
     if (!get_s) {
         if (bad_speak == true && right_speak == true) {
-            printf("%s\n", mixspeak_message);
-            bst_print(bst);
+            printf("%s", mixspeak_message);
             bst_print(bst2);
+            bst_print(bst);
         } else if (bad_speak == true) {
-            printf("%s\n", badspeak_message);
+            printf("%s", badspeak_message);
             bst_print(bst2);
         } else if (right_speak == true) {
-            printf("%s\n", goodspeak_message);
+            printf("%s", goodspeak_message);
             bst_print(bst);
         }
     }
