@@ -53,9 +53,7 @@ void bf_insert(BloomFilter *bf, char *oldspeak) {
 
 bool bf_probe(BloomFilter *bf, char *oldspeak) {
 
-    if (bv_get_bit(bf->filter, hash(bf->primary, oldspeak))
-        && bv_get_bit(bf->filter, hash(bf->primary, oldspeak))
-        && bv_get_bit(bf->filter, hash(bf->tertiary, oldspeak)) == true) {
+    if (bv_get_bit(bf->filter, hash(bf->primary, oldspeak)) && bv_get_bit(bf->filter, hash(bf->secondary, oldspeak)) && bv_get_bit(bf->filter, hash(bf->tertiary, oldspeak)) == true) {
         return true;
     }
     return false;
