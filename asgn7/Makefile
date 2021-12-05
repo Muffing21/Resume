@@ -1,11 +1,11 @@
 CC = clang
 CFLAGS = -Wall -Wpedantic -Werror -Wextra -g
-LFLAGS = -lm
+
 
 all: banhammer
 
 banhammer: banhammer.o speck.o ht.o bst.o node.o bf.o bv.o parser.o
-	$(CC) $(LFLAGS) -o banhammer banhammer.o ht.o bst.o node.o bf.o bv.o parser.o speck.o
+	$(CC) -o banhammer banhammer.o ht.o bst.o node.o bf.o bv.o parser.o speck.o
 
 banhammer.o: banhammer.c 
 	$(CC) $(CFLAGS) -c banhammer.c
@@ -26,7 +26,7 @@ bv.o: bv.c bv.h
 	$(CC) $(CFLAGS) -c bv.c
 
 parser.o: parser.c parser.h
-	$(CC) $(LFLAGS) -c parser.c
+	$(CC) $(CFLAGS) -c parser.c
 
 clean:
 	rm -f banhammer banhammer.o ht.o bst.o node.o bf.o bv.o parser.o
