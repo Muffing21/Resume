@@ -89,8 +89,8 @@ int main(int argc, char **argv) {
     }
 
     char *word = NULL;
-    Node *ht_look = ht_lookup(ht, word);
     while ((word = next_word(stdin, &re)) != NULL) {
+        Node *ht_look = ht_lookup(ht, word);
         if (bf_probe(bf, word) == true) {
             if (ht_look != NULL) {
                 if (ht_look->newspeak != NULL) {
@@ -113,6 +113,17 @@ int main(int argc, char **argv) {
                "rsa.priv).\n   -s seed         Random seed for testing.");
     }
 
+    if (get_s) {
+        printf("average branches traversed: %lf\n", ht_avg_bst_size(ht));
+        printf("Hash table load: %lf\n", ht_avg_bst_height(ht));
+        printf("Average branches traversed: %lf\n", (double) branches / lookups);
+        printf("hash table count: %lf\n", (double) ht_count(ht) / ht_size(ht));
+        printf("Bloom filter load: %lf\n", (double) ht_count(ht) / ht_size(ht));
+    }
+    bf_delete(&bf);
+    ht_delete(&ht);
+    bst_delete(&bst);
+    bst_delete(&bst2);
     clear_words();
     regfree(&re);
     return 0;

@@ -14,7 +14,9 @@ Node *node_create(char *oldspeak, char *newspeak) {
     Node *n = (Node *) malloc(sizeof(Node));
     if (n) {
         n->oldspeak = strdup(oldspeak);
-        n->newspeak = strdup(newspeak);
+        if (newspeak != NULL) {
+            n->newspeak = strdup(newspeak);
+        }
         n->left = NULL;
         n->right = NULL;
     }

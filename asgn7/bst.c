@@ -35,7 +35,7 @@ Node *bst_find(Node *root, char *oldspeak) {
         if (strcmp(root->oldspeak, oldspeak) > 0) {
             branches += 1;
             return bst_find(root->left, oldspeak);
-        } else if (root->oldspeak < oldspeak) {
+        } else if (strcmp(root->oldspeak, oldspeak) < 0) {
             branches += 1;
             return bst_find(root->right, oldspeak);
         }
@@ -49,7 +49,7 @@ Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
         if (strcmp(root->oldspeak, oldspeak) > 0) {
             branches += 1;
             root->left = bst_insert(root->left, oldspeak, newspeak);
-        } else {
+        } else if (strcmp(root->oldspeak, oldspeak) < 0) {
             branches += 1;
             root->right = bst_insert(root->right, oldspeak, newspeak);
         }
@@ -68,14 +68,9 @@ void bst_print(Node *root) {
 }
 
 void bst_delete(Node **root) {
-    if (root == NULL) {
-        return;
+    if (*root) {
+        bst_delete(&(*root)->left);
+        bst_delete(&(*root)->right);
+        node_delete(root);
     }
-
-    //delete the subtrees
-    bst_delete(&(*root)->left);
-    bst_delete(&(*root)->right);
-
-    free(root);
-    return;
 }
