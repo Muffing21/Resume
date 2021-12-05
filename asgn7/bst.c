@@ -1,6 +1,9 @@
 #include "bst.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+uint64_t branches = 0;
 
 //prof long's lecture slide
 static int max(int x, int y) {
@@ -29,9 +32,11 @@ uint32_t bst_size(Node *root) {
 //from prof slides check back on this NULL THING
 Node *bst_find(Node *root, char *oldspeak) {
     if (root) {
-        if (root->oldspeak > oldspeak) {
+        if (strcmp(root->oldspeak, oldspeak) > 0) {
+            branches += 1;
             return bst_find(root->left, oldspeak);
         } else if (root->oldspeak < oldspeak) {
+            branches += 1;
             return bst_find(root->right, oldspeak);
         }
     }
@@ -41,9 +46,11 @@ Node *bst_find(Node *root, char *oldspeak) {
 //from prof slides
 Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
     if (root) {
-        if (root->oldspeak > oldspeak) {
+        if (strcmp(root->oldspeak, oldspeak) > 0) {
+            branches += 1;
             root->left = bst_insert(root->left, oldspeak, newspeak);
         } else {
+            branches += 1;
             root->right = bst_insert(root->right, oldspeak, newspeak);
         }
         return root;
