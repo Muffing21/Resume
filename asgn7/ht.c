@@ -67,12 +67,20 @@ uint32_t ht_count(HashTable *ht) {
 
 double ht_avg_bst_size(HashTable *
         ht) { //computed as sum of the sizes binary search tree/num of non null BST in the hash table
-    return bst_size(*ht->trees) / ht_count(ht);
+	uint32_t total = 0;
+	for (uint32_t i = 0; i < ht->size; i++){
+		total += bst_size(ht->trees[i]);
+	}
+    return (double) total / ht_count(ht);
 }
 
 double ht_avg_bst_height(
     HashTable *ht) { //sum of the heights over all BST/num of non null BST in the hash table
-    return bst_height(*ht->trees) / ht_count(ht);
+    	uint32_t total = 0;
+    	for (uint32_t i = 0; i < ht->size; i++){
+    		total += bst_height(ht->trees[i]);
+    	}
+    return (double) total / ht_count(ht);
 }
 
 //void ht_print(HashTable *ht){
