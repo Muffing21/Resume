@@ -26,9 +26,9 @@ Node *node_create(char *oldspeak, char *newspeak) {
 void node_delete(Node **n) {
     //only the n node is freed. the previous and next nodes that n points to are not deleted. Since we have allocated memory for oldspeak and newspeak, free those. The pointer to the node should be set to NULL
     if (*n) {
-        free(*n);
         free((*n)->oldspeak);
         free((*n)->newspeak);
+        free(*n);
         *n = NULL;
     }
 }

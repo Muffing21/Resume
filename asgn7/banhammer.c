@@ -28,10 +28,11 @@ int main(int argc, char **argv) {
 
     char buffer[100];
     char buffer2[100];
-
+    bool bad_speak = false;
+    bool right_speak = false;
     int opt = 0;
     uint32_t hash_size = 65536;
-    uint32_t bf_size = 1048576;
+    uint32_t bloom_size = 1048576;
     FILE *badspeak = fopen("badspeak.txt", "r");
     FILE *newspeak = fopen("newspeak.txt", "r");
 
@@ -54,8 +55,8 @@ int main(int argc, char **argv) {
 
         case 'f':
             get_f = true;
-            bf_size = atoi(optarg);
-            if (bf_size == 0) {
+            bloom_size = atoi(optarg);
+            if (bloom_size == 0) {
                 printf("input something else please");
             }
             break;
@@ -65,7 +66,7 @@ int main(int argc, char **argv) {
     }
 
     //initialize bloom filter and hash table
-    BloomFilter *bf = bf_create(bf_size);
+    BloomFilter *bf = bf_create(bloom_size);
     HashTable *ht = ht_create(hash_size);
     Node *bst = bst_create();
     Node *bst2 = bst_create();
@@ -95,12 +96,27 @@ int main(int argc, char **argv) {
             if (ht_look != NULL) {
                 if (ht_look->newspeak != NULL) {
                     bst = bst_insert(bst, word, ht_look->newspeak);
+                    right_speak = true;
                 } else {
-                    bst2 = bst_insert(bst, word, NULL);
+                    bst2 = bst_insert(bst2, word, NULL);
+                    bad_speak = true;
                 }
             }
         }
-        printf("Word: %s\n", word);
+    }
+
+    if (!get_s) {
+        if (bad_speak == true && right_speak == true) {
+            printf("%s\n", mixspeak_message);
+            bst_print(bst);
+            bst_print(bst2);
+        } else if (bad_speak == true) {
+            printf("%s\n", badspeak_message);
+            bst_print(bst2);
+        } else if (right_speak == true) {
+            printf("%s\n", goodspeak_message);
+            bst_print(bst);
+        }
     }
 
     if (get_h) { //change later
@@ -117,11 +133,12 @@ int main(int argc, char **argv) {
         printf("average branches traversed: %lf\n", ht_avg_bst_size(ht));
         printf("Hash table load: %lf\n", ht_avg_bst_height(ht));
         printf("Average branches traversed: %lf\n", (double) branches / lookups);
-        printf("hash table count: %lf\n", (double) ht_count(ht) / ht_size(ht));
-        printf("Bloom filter load: %lf\n", (double) ht_count(ht) / ht_size(ht));
+        printf("hash table count: %lf\n", (double) 100 * ht_count(ht) / ht_size(ht));
+        printf("Bloom filter load: %lf\n", (double) 100 * bf_count(bf) / bf_size(bf));
     }
     bf_delete(&bf);
     ht_delete(&ht);
+
     bst_delete(&bst);
     bst_delete(&bst2);
     clear_words();

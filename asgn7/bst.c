@@ -67,6 +67,7 @@ void bst_print(Node *root) {
     }
 }
 
+//from prof slides
 void bst_delete(Node **root) {
     if (*root) {
         bst_delete(&(*root)->left);
