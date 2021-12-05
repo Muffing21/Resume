@@ -130,10 +130,10 @@ int main(int argc, char **argv) {
     }
 
     if (get_s) {
-        printf("average branches traversed: %lf\n", ht_avg_bst_size(ht));
-        printf("Hash table load: %lf\n", ht_avg_bst_height(ht));
+        printf("Average BST size: %lf\n", ht_avg_bst_size(ht));
+        printf("Hash BST height: %lf\n", ht_avg_bst_height(ht));
         printf("Average branches traversed: %lf\n", (double) branches / lookups);
-        printf("hash table count: %lf\n", (double) 100 * ht_count(ht) / ht_size(ht));
+        printf("Hash table count: %lf\n", (double) 100 * ht_count(ht) / ht_size(ht));
         printf("Bloom filter load: %lf\n", (double) 100 * bf_count(bf) / bf_size(bf));
     }
     bf_delete(&bf);

@@ -33,8 +33,11 @@ uint32_t bst_size(Node *root) {
 Node *bst_find(Node *root, char *oldspeak) {
     if (root) {
         if (strcmp(root->oldspeak, oldspeak) > 0) {
+            branches += 1;
             return bst_find(root->left, oldspeak);
+
         } else if (strcmp(root->oldspeak, oldspeak) < 0) {
+            branches += 1;
             return bst_find(root->right, oldspeak);
         }
     }
