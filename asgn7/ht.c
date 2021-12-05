@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+uint64_t lookups = 0;
+
 struct HashTable {
     uint64_t salt[2];
     uint32_t size;
@@ -16,7 +18,12 @@ HashTable *ht_create(uint32_t size) {
     HashTable *ht = (HashTable *) malloc(sizeof(HashTable));
     if (ht) {
         ht->size = size;
-        ht->trees = (Node **) malloc(size);
+        ht->salt[0] = SALT_HASHTABLE_LO;
+        ht->salt[1] = SALT_HASHTABLE_HI;
+        ht->trees = (Node **) malloc(size * sizeof(Node *));
+        for (uint32_t i = 0; i < ht->size; i++) {
+            ht->trees[i] = bst_create();
+        }
         if (!ht->trees) {
             free(ht);
             ht = NULL;
@@ -38,22 +45,22 @@ uint32_t ht_size(HashTable *ht) {
 }
 
 Node *ht_lookup(HashTable *ht, char *oldspeak) {
+    lookups += 1;
     return bst_find(*ht->trees, oldspeak);
 }
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak) {
-    ht->trees[hash(ht->salt, oldspeak)]
-        = bst_insert(ht->trees[hash(ht->salt, oldspeak)], oldspeak, newspeak);
+    lookups += 1;
+    ht->trees[hash(ht->salt, oldspeak) % ht->size]
+        = bst_insert(ht->trees[hash(ht->salt, oldspeak) % ht->size], oldspeak, newspeak);
 }
 
 uint32_t ht_count(HashTable *ht) {
     uint32_t count = 0;
-    uint32_t tree_counter = 0;
     for (uint32_t i = 0; i < ht->size; i++) {
-        if (ht->trees[tree_counter] != NULL) {
+        if (ht->trees[i] != NULL) {
             count += 1;
         }
-        tree_counter += 1;
     }
     return count;
 }
