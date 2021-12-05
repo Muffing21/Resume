@@ -23,10 +23,10 @@ BitVector *bv_create(uint32_t length) {
 //remember to set the pointer to NULL after memory associated with bit vector is freed
 void bv_delete(BitVector **bv) {
     if (*bv && (*bv)->vector) {
-        free(*bv);
         free((*bv)->vector);
-        *bv = NULL;
+        free(*bv);
         (*bv)->vector = NULL;
+        *bv = NULL;
     }
     return;
 }
