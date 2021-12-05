@@ -26,6 +26,7 @@ void bv_delete(BitVector **bv) {
         free(*bv);
         free((*bv)->vector);
         *bv = NULL;
+        *bv->vector = NULL;
     }
     return;
 }
