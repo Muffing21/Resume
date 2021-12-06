@@ -22,6 +22,7 @@ uint32_t bst_height(Node *root) {
     return 0;
 }
 
+//g4g
 uint32_t bst_size(Node *root) {
     if (root == NULL) {
         return 0;
@@ -35,7 +36,7 @@ Node *bst_find(Node *root, char *oldspeak) {
         if (strcmp(root->oldspeak, oldspeak) > 0) {
             branches += 1;
             return bst_find(root->left, oldspeak);
-
+            
         } else if (strcmp(root->oldspeak, oldspeak) < 0) {
             branches += 1;
             return bst_find(root->right, oldspeak);

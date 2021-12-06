@@ -16,7 +16,7 @@ struct BloomFilter {
 BloomFilter *bf_create(uint32_t size) {
     BloomFilter *bf = (BloomFilter *) malloc(sizeof(BloomFilter));
     if (bf) {
-        bf->primary[0] = SALT_PRIMARY_LO;
+        bf->primary[0] = SALT_PRIMARY_LO;   //salts are actually 128 in total, see struct has array size of 2 so we can do this
         bf->primary[1] = SALT_PRIMARY_HI;
         bf->secondary[0] = SALT_SECONDARY_LO;
         bf->secondary[1] = SALT_SECONDARY_HI;
@@ -43,7 +43,7 @@ uint32_t bf_size(BloomFilter *bf) {
     return bv_length(bf->filter);
 }
 
-void bf_insert(BloomFilter *bf, char *oldspeak) {
+void bf_insert(BloomFilter *bf, char *oldspeak) {   //mod by bf_size in the case it becomes too big
 
     bv_set_bit(bf->filter, hash(bf->primary, oldspeak) % bf_size(bf));
 
@@ -62,6 +62,7 @@ bool bf_probe(BloomFilter *bf, char *oldspeak) {
     return false;
 }
 
+//loop through everything, using bf_size
 uint32_t bf_count(BloomFilter *bf) {
     uint32_t count = 0;
     for (uint32_t i = 0; i < bf_size(bf); i++) {
