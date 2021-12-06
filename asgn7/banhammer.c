@@ -26,9 +26,10 @@
 // avg binary BST, avg BST height, avg, branches traversed, hash table load, Bf load
 int main(int argc, char **argv) {
 
-    char buffer[500];  //create some buffer for fscanf
+    char buffer[500]; //create some buffer for fscanf
     char buffer2[500];
-    bool bad_speak = false;   //these 2 bool variables are for checking which message from messages.h to print out
+    bool bad_speak
+        = false; //these 2 bool variables are for checking which message from messages.h to print out
     bool right_speak = false;
     int opt = 0;
     uint32_t hash_size = 65536;
@@ -84,7 +85,7 @@ int main(int argc, char **argv) {
         ht_insert(ht, buffer, buffer2);
     }
 
-    regex_t re;  //the following about 15 lines are from assignment doc
+    regex_t re; //the following about 15 lines are from assignment doc
     if (regcomp(&re, WORD, REG_EXTENDED)) {
         fprintf(stderr, "Failed to compile regex.\n");
         return 1;
@@ -97,7 +98,8 @@ int main(int argc, char **argv) {
             if (ht_look != NULL) {
                 if (ht_look->newspeak != NULL) {
                     bst = bst_insert(bst, word, ht_look->newspeak);
-                    right_speak = true;                   //99 and 101 checks and sees if which kinda case we're dealing with, badspeak or newspeak
+                    right_speak
+                        = true; //99 and 101 checks and sees if which kinda case we're dealing with, badspeak or newspeak
                 } else {
                     bst2 = bst_insert(bst2, word, NULL);
                     bad_speak = true;
@@ -106,7 +108,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (!get_s) {    //I did this because in the case where -s is given by the user, only print the stats and nothing else, but since !s, prints out the messages
+    if (!get_s) { //I did this because in the case where -s is given by the user, only print the stats and nothing else, but since !s, prints out the messages
         if (bad_speak == true && right_speak == true) {
             printf("%s", mixspeak_message);
             bst_print(bst2);
@@ -121,9 +123,13 @@ int main(int argc, char **argv) {
     }
 
     if (get_h) { //change later
-        printf("SYPNOSIS\n  A word filtering program for the GPRSC.\n  Filters out and reports bad words parsed from stdin.\n\nUSAGE\n  ./banhammer [-hs] [-t size] [-f size]\n\nOPTIONS\n  -h           Program usage and help.\n  -s           Print program statistics.\n  -t size size      Specify hash table size (default: 2^16).\n  -f size      Specify Bloom filter size (default: 2^20).\n");
+        printf("SYPNOSIS\n  A word filtering program for the GPRSC.\n  Filters out and reports bad "
+               "words parsed from stdin.\n\nUSAGE\n  ./banhammer [-hs] [-t size] [-f "
+               "size]\n\nOPTIONS\n  -h           Program usage and help.\n  -s           Print "
+               "program statistics.\n  -t size size      Specify hash table size (default: "
+               "2^16).\n  -f size      Specify Bloom filter size (default: 2^20).\n");
     }
-	//typecast so it does not round down
+    //typecast so it does not round down
     if (get_s) {
         printf("Average BST size: %lf\n", ht_avg_bst_size(ht));
         printf("Average BST height: %lf\n", ht_avg_bst_height(ht));
