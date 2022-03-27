@@ -1,7 +1,7 @@
 
 # What Does the program do?
 
-he program is designed to take user input of number of players and the seed number. Then, the program will play out the "Pass the Pigs" game. It will output the current player rolling the pig, what they rolled, and lastly the winner with the amount of points they have.
+The program is designed to take user input of number of players and the seed number. Then, the program will play out the "Pass the Pigs" game. It will output the current player rolling the pig, what they rolled, and lastly the winner with the amount of points they have.
 
 
 
