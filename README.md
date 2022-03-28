@@ -1,4 +1,4 @@
-# Coding Assignments from C Class
+# Coding Assignments & Game Design
 
 ## asgn1 - Pass the Pigs Game
 ## asgn2 - Writing Our Own Math Library
