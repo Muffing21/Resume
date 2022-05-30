@@ -17,3 +17,8 @@
 ## Makefile : to compile code
 
 ## README : this file
+
+# How to run the program?
+## ./Arithmetic infile outfile
+## infile : line of numbers separated by a white line followed with another line of numbers
+## oufile : the result after operations are performed on the input file
