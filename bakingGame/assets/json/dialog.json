@@ -1,0 +1,94 @@
+[
+	[
+		{
+			"speaker" : "You",
+			"dialog" : "Hello, I am your new intern baker.",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker" : "Gorgon",
+			"dialog" : "Hello! you fricking donkey, I'm Gorgon Baguette, or call me master of baking.",
+			"newSpeaker" : "true"
+		},
+		{	
+			"speaker" : "You",
+			"dialog" : "is it easy to bake a cake?",
+			"newSpeaker" : "true"
+		},
+		{	
+			"speaker" : "Gorgon",
+			"dialog" : "NO! No! No! I think It is super easy for me to bake a cake. But it is not easy for you. My grandpa could easily bake one! So, can you do it?!",
+			"newSpeaker" : "true"
+		},
+		{	
+			"speaker" : "You",
+			"dialog" : "Sounds harsh but I can try! I am a fighter, born ready to bake!",
+			"newSpeaker" : "true"
+		},
+		{	
+
+			"speaker" : "Gorgon",
+			"dialog" : "First step: you will receive a recipe from me and you must gather the ingredients from the kitchen so you don't drop them.",
+			"newSpeaker" : "true"
+		},
+		{	
+
+			"speaker" : "Gorgon",
+			"dialog" : "Make sure to walk in front of the fridge/shelves before you grab (SPACEBAR) the ingredients."
+		},
+		{
+			"speaker": "You",
+			"dialog" : "Understood sir!",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "Gorgon",
+			"dialog" : "First step sounds easy right? but the second step is hard because you will need to toss things into the bowl (Drag and Drop). The bakery shop has anti-gravity technology so the ingredients will be flying.",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "You",
+			"dialog" : "What...?! Yes sir!",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "Gorgon",
+			"dialog" : "Next, you will need to mix the ingredients. Start mashing those goodies together! (mash arrow keys in order left up right down)",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "You",
+			"dialog" : "Sounds easy enough.",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "Gorgon",
+			"dialog" : "Next process is really important. You must master the art of temperature control. Press (SPACEBAR) once the blue hits the green.",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "You",
+			"dialog" : "You Pondering: master is so over-dramatic...",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "Gorgon",
+			"dialog" : "Lastly, the last step will be designing the cake by adding decorations. You will be able to put the flower, candy, chocolate or anything that makes the cake perfect!",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "You",
+			"dialog" : "Yes! Sir! Yes! Sir! Yes! Sir!",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "Gorgon",
+			"dialog" : "Don't always say Yes, You stupid! If the Cake is disgusting, you’ll get arrested. Make sure to try to complete this in 60 minutes! (60 seconds in game)",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker": "Gorgon",
+			"dialog" : "Ready?! Press S and get to work, now!"
+		}
+	]
+]
